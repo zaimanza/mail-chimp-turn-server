@@ -2,19 +2,10 @@
 var router = require('express').Router()
 const axios = require('axios').default;
 
-
-const header_data = {
-    headers: {
-        "Authorization": "Bearer 3f262026e4dadefc517e9c4607bd15f8-us9"
-    },
-    timeout: 1000,
-    // plenty more options can be added, refer source link above
-}
-
-
 // top player
 router.post('/lists/:list_id/members', async (req, res) => {
     try {
+        const Authorization = req.get("Authorization")
         var body = req.body
         var params = req.params
 
@@ -27,7 +18,13 @@ router.post('/lists/:list_id/members', async (req, res) => {
         const result = await axios?.post(
             `https://us9.api.mailchimp.com/3.0/lists/` + params?.list_id + `/members`,
             body,
-            header_data
+            {
+                headers: {
+                    "Authorization": Authorization
+                },
+                timeout: 1000,
+                // plenty more options can be added, refer source link above
+            }
         ).catch(function (error) {
             return res.status(400).json({
                 message: "Oh no! Error in adding member :O",
@@ -51,6 +48,7 @@ router.post('/lists/:list_id/members', async (req, res) => {
 
 router.post('/lists/:list_id/members/:subscriber_hash/tags', async (req, res) => {
     try {
+        const Authorization = req.get("Authorization")
         var body = req.body
         var params = req.params
 
@@ -73,7 +71,13 @@ router.post('/lists/:list_id/members/:subscriber_hash/tags', async (req, res) =>
             params?.subscriber_hash +
             `/tags`,
             body,
-            header_data
+            {
+                headers: {
+                    "Authorization": Authorization
+                },
+                timeout: 1000,
+                // plenty more options can be added, refer source link above
+            }
         ).catch(function (error) {
             return res.status(400).json({
                 message: "Oh no! Error in adding tags :O",
@@ -91,6 +95,7 @@ router.post('/lists/:list_id/members/:subscriber_hash/tags', async (req, res) =>
 })
 router.get('/lists/:list_id/members/:subscriber_hash/tags', async (req, res) => {
     try {
+        const Authorization = req.get("Authorization")
         var body = req.body
         var params = req.params
 
@@ -106,13 +111,24 @@ router.get('/lists/:list_id/members/:subscriber_hash/tags', async (req, res) => 
             })
         }
 
+        console.log(`https://us9.api.mailchimp.com/3.0/lists/` +
+            params?.list_id +
+            `/members/` +
+            params?.subscriber_hash +
+            `/tags`)
         const result = await axios?.get(
             `https://us9.api.mailchimp.com/3.0/lists/` +
             params?.list_id +
             `/members/` +
             params?.subscriber_hash +
             `/tags`,
-            header_data
+            {
+                headers: {
+                    "Authorization": Authorization
+                },
+                timeout: 1000,
+                // plenty more options can be added, refer source link above
+            }
         ).catch(function (error) {
             return res.status(400).json({
                 message: "Oh no! Error in adding tags :O",
