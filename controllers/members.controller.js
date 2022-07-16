@@ -26,7 +26,7 @@ router.post('/lists/:list_id/members', async (req, res) => {
                 // plenty more options can be added, refer source link above
             }
         ).catch(function (error) {
-            return res.status(400).json({
+            console.log({
                 message: "Oh no! Error in adding member :O",
             })
         })
@@ -93,6 +93,7 @@ router.post('/lists/:list_id/members/:subscriber_hash/tags', async (req, res) =>
         })
     }
 })
+
 router.get('/lists/:list_id/members/:subscriber_hash/tags', async (req, res) => {
     try {
         const Authorization = req.get("Authorization")
@@ -130,7 +131,7 @@ router.get('/lists/:list_id/members/:subscriber_hash/tags', async (req, res) => 
                 // plenty more options can be added, refer source link above
             }
         ).catch(function (error) {
-            return res.status(400).json({
+            console.log({
                 message: "Oh no! Error in adding tags :O",
             })
         })
