@@ -50,7 +50,12 @@ router.get('/lists/:list_id/members', async (req, res) => {
     try {
         const Authorization = req.get("Authorization")
         var params = req.params
-
+        var query = req.query
+        const urlParamString = new URLSearchParams(query).toString()
+        var paramWithPoint
+        if (urlParamString) {
+            paramWithPoint = '?' + urlParamString
+        }
         if (!params?.list_id) {
             return res.status(400).json({
                 message: "Oh no! can't find your list_id :O",
@@ -58,7 +63,7 @@ router.get('/lists/:list_id/members', async (req, res) => {
         }
 
         const result = await axios?.get(
-            `https://us9.api.mailchimp.com/3.0/lists/` + params?.list_id + `/members`,
+            `https://us9.api.mailchimp.com/3.0/lists/` + params?.list_id + `/members` + (paramWithPoint ?? ``),
             {
                 headers: {
                     "Authorization": Authorization
