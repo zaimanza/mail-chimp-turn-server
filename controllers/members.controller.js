@@ -46,6 +46,47 @@ router.post('/lists/:list_id/members', async (req, res) => {
     }
 })
 
+router.get('/lists/:list_id/members', async (req, res) => {
+    try {
+        const Authorization = req.get("Authorization")
+        var params = req.params
+
+        if (!params?.list_id) {
+            return res.status(400).json({
+                message: "Oh no! can't find your list_id :O",
+            })
+        }
+
+        const result = await axios?.get(
+            `https://us9.api.mailchimp.com/3.0/lists/` + params?.list_id + `/members`,
+            {
+                headers: {
+                    "Authorization": Authorization
+                },
+                timeout: 1000,
+                // plenty more options can be added, refer source link above
+            }
+        ).catch(function (error) {
+            console.log({
+                message: "Oh no! Error in adding member :O",
+            })
+        })
+
+        if (!result?.data) {
+            return res.status(400).json({
+                message: "Oh no! Error in adding member :O",
+            })
+        } else {
+            return res.status(200).json(result?.data)
+        }
+    } catch (error) {
+        return res.status(400).json({
+            type: "Server Error",
+            error: error
+        })
+    }
+})
+
 router.post('/lists/:list_id/members/:subscriber_hash/tags', async (req, res) => {
     try {
         const Authorization = req.get("Authorization")
